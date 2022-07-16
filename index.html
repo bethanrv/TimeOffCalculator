@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<title>Time Off Calculator</title>
+</head>
+<body>
+	<h1>Welcome to Brian's Raise Calcuator!</h1>
+	<h2>What value do I bring & how do I value my time?</h2>
+
+	<section>
+		<h4> Compensation <i class="material-icons circle_btn dropdown"> arrow_drop_down </i> </h4>
+		<div>
+			<column>
+				<h3>Skills Used For Day-to-Day Work</h3>
+				<p>Software Engineering:</p>
+				<p>Robotic Process Automation:</p>
+				<p>Python Development: </p>
+				<p>Perl Development: </p>
+				<p>Full Stack Web Development: </p>
+				<p> Mid-Range Average: </p>
+			</column>
+			<column>
+				<h3>Average Columbus Salary Ranges</h3>
+				<p> $85,000 - $160,000 </p>
+				<p> $70,000 - $130,000 </p>
+				<p> $80,000 - $120,000 </p>
+				<p> $60,000 - $120,000 </p>
+				<p> $80,000 - $120,000 </p>
+				<p> $102,500</p>
+			</column>
+		</div>
+	</section>
+
+	<section>
+		<h4 style="padding-top:5vh;"> Time-Off <i class="material-icons circle_btn dropdown"> arrow_drop_down </i> </h4>
+		<div>
+			<column>
+				<h3> Allocation</h3>
+				<p> Portion of time to spend outside of Columbus: </p>
+				<p> Portion of in-office work days per week: </p>
+				<p> Resulting time-off per year: </p>
+			</column>
+			<column>
+				<h3> Proportion</h3>
+				<p> 1/3 </p>
+				<p> 3/7 </p>
+				<p> 1/7 ~ 52 days</p>
+			</column>
+		</div>
+	</section>
+
+
+	<section>
+		<h4 style="padding-top:5vh;"> Adjusted Salary & Time-Off <i class="material-icons circle_btn dropdown"> arrow_drop_down </i> </h4>
+		<div>
+			<column>
+				<h3> Factor </h3>
+				<p> Base salary: </p>
+				<p> Additional time-off: </p>
+				<p> Additional time-off as percent of workdays: </p>
+				<p> New adjusted salary:</p>
+			</column>
+			<column>
+				<h3> Value </h3>
+				<p-out>$<p id='baseSalary' style="margin:0" class="editable"> 102,500 </p></p-out>
+				<p-out style='margin: 0;'><p id='vacationDays' style="margin-right: 0.5vw;" class="editable"> 31</p> days</p-out>
+				<!--<p-out style='margin: 0;'><p style="margin-right: 0.5vw;" class="editable"> 12</p> %</p-out>-->
+				<p id="vacationPercent"> 12 % </p>
+				<p-out>$<p id='adjustedSalary' style="margin: 0;"> 90,200</p> </p-out>
+			</column>
+		</div>
+	</section>
+
+</body>
+</html>
+<style type="text/css">
+	h1{
+		display: flex;
+		justify-content: center;
+	}
+	h2{
+		display: flex;
+		justify-content: center;
+		font-weight: 100;
+	}
+	h3{
+		font-weight: 100;
+		text-decoration: underline;
+		margin-left: 5vw;
+	}
+	h4{
+		font-size: 1.2em;
+		font-weight: 100;
+		margin: 0;
+		margin-left: 5vw;
+		display: flex;
+		align-items: center;
+	}
+	p{
+		margin-left: 5vw;
+		margin-top: 1vh;
+		margin-bottom: 1vh;
+	}
+	div{
+		display: flex;
+	}
+	column{
+		display: flex;
+		min-width: 200px;
+		flex-direction: column;
+	}
+	.circle_btn{
+		margin-left: 1vw;
+		border:  2px solid black;
+		border-radius: 50%;
+		cursor: pointer;
+	}
+	.circle_btn:hover{
+		background-color: black;
+		color: white;
+	}
+	p-out{
+		display: flex;
+		align-items: center;
+		margin-left: 5vw;
+		margin-top: 1vh;
+		margin-bottom: 1vh;
+	}
+	.editable{
+		cursor: pointer;
+	}
+</style>
+
+<script type="text/javascript">
+	// load events
+	window.onload = (event) =>{
+		initializeDropdowns()
+		initializeEditableText()
+	}
+
+	// init drop down windowss
+	function initializeDropdowns(){
+		var dropdowns = Array.from(document.getElementsByClassName('dropdown'))
+		dropdowns.forEach((dropdown)=>{
+			dropdown.onclick = (event)=> {
+				dropdown_state = dropdown.innerHTML
+				if(dropdown.innerHTML == 'arrow_drop_up'){
+					dropdown.innerHTML = 'arrow_drop_down'
+					dropdown.parentElement.parentElement.children[1].style.display = 'flex'
+				}else{
+					dropdown.innerHTML = 'arrow_drop_up'
+					dropdown.parentElement.parentElement.children[1].style.display = 'none'
+				}
+			}
+		})
+	}
+
+	//init editable text
+	var current_edit_element;
+	function initializeEditableText(){
+
+
+		//add document onclick to reset curr editing
+		document.onclick = (event) => {
+			if(event.target.className != 'editable'){
+				current_edit_element = null;
+			}
+		}
+
+
+		var editables = Array.from(document.getElementsByClassName('editable'))
+		editables.forEach((editable)=>{
+			editable.onclick = (event)=>{
+				current_edit_element = editable
+				editable.innerHTML = ''
+			}
+		})
+
+
+	}
+
+	document.addEventListener('keypress', (event) => {
+	  var name = event.key;
+
+	  var code = event.code;
+	  // Alert the key name and key code on keydown
+	  //alert(`Key pressed ${name} \r\n Key code value: ${code}`);
+	  if(current_edit_element != null && Number.isInteger(parseInt(name))){
+	  	current_edit_element.innerHTML = current_edit_element.innerHTML + name
+	  	recalculate()
+	  }
+	}, false);	
+
+	function recalculate(){
+		baseSalary = document.getElementById('baseSalary').innerHTML.replace(',', '')
+		vacationDays = document.getElementById('vacationDays').innerHTML
+
+		vacationPercent = vacationDays/260
+
+		document.getElementById('vacationPercent').innerHTML = vacationPercent + " %"
+
+		adjustedSalary = parseInt(baseSalary) * (1 - vacationPercent)
+
+		document.getElementById('adjustedSalary').innerHTML = adjustedSalary
+	}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
